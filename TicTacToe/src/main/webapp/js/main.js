@@ -1,12 +1,7 @@
 'use strict';
-
-var usernamePage = document.querySelector('#username-page')
-var chatPage = document.querySelector('#chat-page');
-var usernameForm = document.querySelector('#usernameForm');
 var messageForm = document.querySelector('#messageForm');
 var messageInput = document.querySelector('#message');
 var messageArea = document.querySelector('#messageArea');
-var connectingElement = document.querySelector('.connecting');
 
 var stompClient = null;
 var username = null;
@@ -21,10 +16,7 @@ function connect(event) {
 
     username = "a";
 
-    if(username) {
-
-        usernamePage.classList.add('hidden');
-        chatPage.classList.remove('hidden');
+    if(username){
 
         var socket = new SockJS('/ws');
         stompClient = Stomp.over(socket);
@@ -46,15 +38,11 @@ function onConnected() {
         {},
         JSON.stringify({sender: username, type: 'JOIN'})
     )
-
-    connectingElement.classList.add('hidden');
 }
 
 
 function onError(error) {
 
-    connectingElement.textCOntent = 'Could not connect to WebSocket Server - Please refresh this page and Try Again';
-    connectingElement.style.color = 'red';
 }
 
 
@@ -129,5 +117,5 @@ function getAvatarColor(messageSender) {
 
 
 
-usernameForm.addEventListener('submit', connect, true)
+messageForm.addEventListener('submit', connect, true)
 messageForm.addEventListener('submit', sendMessage, true)
