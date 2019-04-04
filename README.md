@@ -1,6 +1,8 @@
-# TicTacToe
+# TicTalk
 
-A simple SpringBoot AngularJS Web Service created to help me learn about building Web Applications
+An expansion of the TicTacToe SpringBoot AngularJS Web Service created to help me learn about building
+Web Applications. I plan on integrating a chat room and websockets into this application and developing
+other neat features. 
 
 
 ## Getting Started
