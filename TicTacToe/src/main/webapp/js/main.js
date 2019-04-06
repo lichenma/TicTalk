@@ -1,4 +1,5 @@
 'use strict';
+var usernameForm = document.querySelector('#usernameForm');
 var messageForm = document.querySelector('#messageForm');
 var messageInput = document.querySelector('#message');
 var messageArea = document.querySelector('#messageArea');
@@ -13,7 +14,7 @@ var colors = [
 
 
 function connect(event) {
-
+    console.log("==================MADE IT");
     username = "a";
 
     if(username){
@@ -117,5 +118,6 @@ function getAvatarColor(messageSender) {
 
 
 
-messageForm.addEventListener('submit', connect, true)
-messageForm.addEventListener('submit', sendMessage, true)
+usernameForm.addEventListener('submit', connect, true);
+messageForm.addEventListener('submit', sendMessage, true);
+//messageForm.addEventListener('submit', connect, true);

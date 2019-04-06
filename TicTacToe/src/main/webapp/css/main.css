@@ -70,6 +70,8 @@ button.accent {
 #chat-page {
     position: relative;
     height: 100%;
+    margin: auto;
+    width: 100%;
 }
 
 
