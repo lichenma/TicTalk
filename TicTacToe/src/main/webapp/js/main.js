@@ -15,7 +15,7 @@ var colors = [
 
 function connect(event) {
     console.log("==================MADE IT");
-    username = "a";
+    username = "testing value";
 
     if(username){
 
