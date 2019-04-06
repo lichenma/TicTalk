@@ -5,6 +5,7 @@ gameModule.controller('newGameController', ['$rootScope','$scope', '$http', '$lo
 
         rootScope.gameId = null;
         scope.newGameData = null;
+        rootScope.playerId = null;
 
         scope.newGameOptions = {
             availablePieces: [
@@ -33,6 +34,14 @@ gameModule.controller('newGameController', ['$rootScope','$scope', '$http', '$lo
                 location.path('/game/' + rootScope.gameId);
             }).catch(function (response) {
                 location.path('/player/panel');
+            });
+
+            // retrieving player id data
+
+            http.get('/player/logged').then(function (response) {
+                rootScope.playerId=response.data;
+            }).catch(function (response) {
+                rootScope.playerId="error";
             });
         }
 
