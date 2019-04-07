@@ -39,15 +39,15 @@
 
 
 <body>
-
-    <nav class="navbar navbar-inverse" role="navigation">
+<!--
+    <nav id="mainNav" class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" role="navigation" style="max-height: 5em;">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="/">TicTacToe game</a>
+                <a class="navbar-brand" href="/">TicTalk</a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="#/about">About</a></li>
+                    <li><a href="#!/about">About</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a><strong><logged-user/></strong></a></li>
@@ -56,8 +56,28 @@
             </div>
         </div>
     </nav>
+-->
+ Navigation
+<nav class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">Navigation</a>
+        <button class="navbar-toggler navbar-toggler-right text-uppercase bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            Menu
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="#!/about">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a><strong><logged-user/></strong></a></li>
+                <li><a href="/login?logout" style="color: #fff;">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
-    <div ng-view="name"></div>
+    <div ng-view="name" style="padding-top: 5em;"></div>
 
     <footer class="text-center">
         <!-- this is the footer add something if you want later-->
