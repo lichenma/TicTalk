@@ -3,9 +3,11 @@ var usernameForm = document.querySelector('#usernameForm');
 var messageForm = document.querySelector('#messageForm');
 var messageInput = document.querySelector('#message');
 var messageArea = document.querySelector('#messageArea');
+var usernamePage = document.querySelector('#username-page');
+var gamePage = document.querySelector('#game-page');
 
 var stompClient = null;
-var username = null;
+var username=null;
 
 var colors = [
     '#2196F3', '#32c787', '#00BCD4', '#ff5652',
@@ -14,14 +16,14 @@ var colors = [
 
 
 function connect(event) {
-    console.log("==================MADE IT");
-    username = "testing value";
-
+    username= document.querySelector('#name').value.trim();
+    console.log("==================MADE IT" + username);
     if(username){
 
+        usernamePage.classList.add('hidden');
+        gamePage.classList.remove('hidden');
         var socket = new SockJS('/ws');
         stompClient = Stomp.over(socket);
-
         stompClient.connect({}, onConnected, onError);
     }
 

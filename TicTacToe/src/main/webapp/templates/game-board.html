@@ -3,53 +3,56 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script src="../js/main.js"></script>
 
+<!-- username can be accessed using this scope variable
 
-<h1>{{playerId.object.userName}}</h1>
-<div class="row">
-<div class="col-md-6">
+<h1 id="userName">{{playerId.object.userName}}</h1>
 
-<div class="gameon">
-    <!--<div class="messageContainer" ng-show="game.gameover">-->
-	<!--<div class="winmessage">{{game.winmessage}}<br/> GAME OVER</div>-->
-    <!--</div>-->
+-->
 
-    <div class="tableContainer">
-	<div class="gametable">
-	    <div ng-repeat="row in rows" class="tablerow">
-		<div id="{{column.id}}" class="{{column.class}}" ng-repeat="column in row" >
-		    <div ng-click="markPlayerMove(column)" class="boxContent{{column.letter}}"> </div>
+<div id="game-page" class="hidden">
+	<div class="col-md-6">
+
+		<div class="gameon">
+			<!--<div class="messageContainer" ng-show="game.gameover">-->
+			<!--<div class="winmessage">{{game.winmessage}}<br/> GAME OVER</div>-->
+			<!--</div>-->
+
+			<div class="tableContainer">
+				<div class="gametable">
+					<div ng-repeat="row in rows" class="tablerow">
+						<div id="{{column.id}}" class="{{column.class}}" ng-repeat="column in row" >
+							<div ng-click="markPlayerMove(column)" class="boxContent{{column.letter}}"> </div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-	    </div>
 	</div>
-    </div>
-</div>
-</div>
 
-<div class="col-md-6" style="max-height: 30em; overflow:auto;">
-<div>
+	<div class="col-md-6" style="max-height: 30em; overflow:auto;">
+		<div>
 
-    <table class="table table-hover table-striped table-condensed" ng-show="movesInGame.length">
-	<h2 class="lead">History of moves in the game</h2>
-	<thead>
-	<td>Player</td>
-	<td>Position</td>
-	<td>Move created</td>
-	</thead>
-	<tbody>
-	    <tr ng-repeat="move in movesInGame">
-		<td>{{move.userName}}</td>
-		<td>Board row: {{move.boardRow}}, Board column: {{move.boardColumn}}</td>
-		<td>{{move.created | date:'MM-dd-yyyy HH:mm:ss'}}</td>
-		</tr>
-		</tbody>
-	    </table>
+			<table class="table table-hover table-striped table-condensed" ng-show="movesInGame.length">
+			<h2 class="lead">History of moves in the game</h2>
+			<thead>
+			<td>Player</td>
+			<td>Position</td>
+			<td>Move created</td>
+			</thead>
+			<tbody>
+				<tr ng-repeat="move in movesInGame">
+				<td>{{move.userName}}</td>
+				<td>Board row: {{move.boardRow}}, Board column: {{move.boardColumn}}</td>
+				<td>{{move.created | date:'MM-dd-yyyy HH:mm:ss'}}</td>
+				</tr>
+				</tbody>
+				</table>
 
-	    <div ng-show="!movesInGame.length">
-		No moves yet.
-	    </div>
-
-</div>
-</div>
+				<div ng-show="!movesInGame.length">
+				No moves yet.
+				</div>
+		</div>
+	</div>
 	<div id="chat-page">
 		<div class="chat-container">
 			<ul id="messageArea">
@@ -63,14 +66,20 @@
 					</div>
 				</div>
 			</form>
-
-			<form id="usernameForm" name="messageForm">
-				<div class="form-group">
-					<div class="input-group clearfix">
-						<button type="submit" class="primary">Connect</button>
-					</div>
-				</div>
-			</form>
 		</div>
+	</div>
+</div>
+
+<div id="username-page">
+	<div class="username-page-container">
+		<h1 class="title">Enter your Username</h1>
+		<form id="usernameForm" name="usernameForm">
+			<div class="form-group">
+				<input type="text" id="name" placeholder="Username" autocomplete="off" class="form-control"/>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="accent username-submit">Connect</button>
+			</div>
+		</form>
 	</div>
 </div>
