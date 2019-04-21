@@ -10,14 +10,14 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class ChatController {
 
-    @MessageMapping("/chat.sendMessage")
-    @SendTo("/topic/public")
+    @MessageMapping("/chat.sendMessage/{Id}")
+    @SendTo("/topic/{Id}")
     public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
         return chatMessage;
     }
 
-    @MessageMapping("/chat.addUser")
-    @SendTo("/topic/public")
+    @MessageMapping("/chat.addUser/{Id}")
+    @SendTo("/topic/{Id}")
     public ChatMessage addUser(@Payload ChatMessage chatMessage,
                                SimpMessageHeaderAccessor headerAccessor) {
         // Add username in web socket session

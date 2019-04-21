@@ -8,6 +8,7 @@ var gamePage = document.querySelector('#game-page');
 
 var stompClient = null;
 var username=null;
+var Id=null;
 
 var colors = [
     '#2196F3', '#32c787', '#00BCD4', '#ff5652',
@@ -15,29 +16,47 @@ var colors = [
 ];
 
 
-function connect(event) {
-    username= document.querySelector('#name').value.trim();
-    console.log("==================MADE IT" + username);
-    if(username){
+async function connect() {
+    await sleep(1000);
+    const Url = '/player/logged'; 
+    console.log(Url);
+    $.ajax({
+        url: Url,
+        type:"GET",
+        success: function(data){
+            username=data.object.userName;
 
-        usernamePage.classList.add('hidden');
-        gamePage.classList.remove('hidden');
-        var socket = new SockJS('/ws');
-        stompClient = Stomp.over(socket);
-        stompClient.connect({}, onConnected, onError);
-    }
+            if(username){
 
-    event.preventDefault();
+                //usernamePage.classList.add('hidden');
+                //gamePage.classList.remove('hidden');
+                var socket = new SockJS('/ws');
+                stompClient = Stomp.over(socket);
+                stompClient.connect({}, onConnected, onError);
+            }
+        },
+        error: function(error){
+            console.log(`Error ${error}`);
+        }
+    })
+    //username= document.querySelector('#name').value.trim();
 }
 
 
 function onConnected() {
+    //////////////////////////////////////////////////////////////////////////////////
+    // the topic we subscribe to will be determined from the url - namely the game Id 
+    // we can write up a service call to get it but I don't know if we ened it
+    //////////////////////////////////////////////////////////////////////////////////
+    
+    var Url= window.location.href;
+    Id = Url.substring(Url.lastIndexOf("/")+1, Url.length);
 
-    // subscribe to the public topic
-    stompClient.subscribe('/topic/public', onMessageReceived);
+    // subscribe to the specific game topic
+    stompClient.subscribe('/topic/'+Id, onMessageReceived);
 
     // send username to server
-    stompClient.send("/app/chat.addUser",
+    stompClient.send("/app/chat.addUser/"+Id,
         {},
         JSON.stringify({sender: username, type: 'JOIN'})
     )
@@ -60,7 +79,7 @@ function sendMessage(event) {
             type: 'CHAT'
         };
 
-        stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+        stompClient.send("/app/chat.sendMessage/"+Id, {}, JSON.stringify(chatMessage));
         messageInput.value = '';
     }
 
@@ -118,8 +137,10 @@ function getAvatarColor(messageSender) {
     return colors[index];
 }
 
-
-
-usernameForm.addEventListener('submit', connect, true);
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+//usernameForm.addEventListener('submit', connect, true);
 messageForm.addEventListener('submit', sendMessage, true);
 //messageForm.addEventListener('submit', connect, true);
+connect();

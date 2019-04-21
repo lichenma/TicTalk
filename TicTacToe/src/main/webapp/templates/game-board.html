@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="../css/main.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="../js/main.js"></script>
 
 <!-- username can be accessed using this scope variable
@@ -9,7 +10,7 @@
 
 -->
 
-<div id="game-page" class="hidden row">
+<div id="game-page" class="row">
 	<div class="col-md-6">
 
 		<div class="gameon">
@@ -70,7 +71,8 @@
 	</div>
 </div>
 
-<div id="username-page">
+<!-- Include this part if we want users to set their own username -->
+<div id="username-page" class="hidden">
 	<div class="username-page-container">
 		<h1 class="title">Enter your Username</h1>
 		<form id="usernameForm" name="usernameForm">

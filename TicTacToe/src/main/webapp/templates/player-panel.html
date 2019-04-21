@@ -49,7 +49,7 @@
         <!-- JOIN EXISITNG GAME -->
         <div class="col-md-6" ng-controller="gamesToJoinController">
 
-                <table class="table table-hover table-striped table-condensed" ng-show="gamesToJoin.length">
+                <table class="table table-hover table-striped table-condensed" style="color:white;" ng-show="gamesToJoin.length">
                     <h2 class="lead">Join existing game</h2>
                     <thead>
                         <td>Started player</td>
@@ -63,7 +63,7 @@
                         <td>{{game.gameStatus}}</td>
                         <td>{{game.created | date:'MM-dd-yyyy HH:mm:ss'}}</td>
                         <td>
-                            <button type="submit" class="btn btn-sm" ng-click="joinGame(game.id)">
+                            <button type="submit" class="btn btn-sm" ng-click="joinGame(game.id)" style="color:white; background-color: green;">
                             <span class="glyphicon glyphicon-plus"></span> Join </button>
                         </td>
                     </tr>
