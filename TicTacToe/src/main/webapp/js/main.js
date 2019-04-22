@@ -92,7 +92,7 @@ function onMessageReceived(payload) {
     var message = JSON.parse(payload.body);
 
     var messageElement = document.createElement('li');
-
+    messageElement.style.fontSize= '0.8em';
     if (message.type === 'JOIN') {
 
         messageElement.classList.add('event-message');

@@ -30,8 +30,8 @@
 		</div>
 	</div>
 
-	<div class="col-md-6" style="max-height: 30em; overflow:auto;">
-		<div>
+	<div class="col-md-6">
+		<div class="row" style="max-height: 15em;overflow:auto; font-size: 0.8em; padding-right: 10px; margin-right: 0px; padding-left: 20px;">
 
 			<table style="color:white;" class="table table-hover table-striped table-condensed" ng-show="movesInGame.length">
 			<h2 class="lead">History of moves in the game</h2>
@@ -53,22 +53,27 @@
 				No moves yet.
 				</div>
 		</div>
-	</div>
-	<div id="chat-page">
-		<div class="chat-container">
-			<ul id="messageArea">
-
-			</ul>
-			<form id="messageForm" name="messageForm">
-				<div class="form-group">
-					<div class="input-group clearfix">
-						<input type="text" id="message" placeholder="Type a Message..." autocomplete="off" class="form-control"/>
-						<button type="submit" class="primary">Send</button>
+		<div id="chat-page" class="row" style="height: 15em; padding-top: 1em;">
+			<div class="chat-container" style="
+			margin-left: 0px;
+			margin-top: 0px;
+			margin-right: 0px;
+			width: 100%;">
+				<ul id="messageArea" style="height:10em; overflow:auto;">
+	
+				</ul>
+				<form id="messageForm" name="messageForm">
+					<div class="form-group">
+						<div class="input-group clearfix">
+							<input type="text" id="message" placeholder="Type a Message..." autocomplete="off" class="form-control"/>
+							<button type="submit" class="primary">Send</button>
+						</div>
 					</div>
-				</div>
-			</form>
+				</form>
+			</div>
 		</div>
 	</div>
+	
 </div>
 
 <!-- Include this part if we want users to set their own username -->
