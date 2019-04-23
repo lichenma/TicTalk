@@ -49,8 +49,8 @@ gameModule.controller('newGameController', ['$rootScope','$scope', '$http', '$lo
 
     }]);
 
-gameModule.controller('gamesToJoinController', ['$scope', '$http', '$location',
-    function (scope, http, location) {
+gameModule.controller('gamesToJoinController', ['$rootScope','$scope', '$http', '$location',
+    function (rootScope, scope, http, location) {
 
         scope.gamesToJoin=[];
 
@@ -70,6 +70,17 @@ gameModule.controller('gamesToJoinController', ['$scope', '$http', '$location',
                 }
             }).then(function (response) {
                 location.path('/game/' + response.data.id);
+
+                // retrieving player id data
+
+                http.get('/player/logged').then(function (response) {
+                    var temp = response.data
+                    rootScope.playerId=temp.object.userName;
+                    console.log(rootScope.playerId);
+                }).catch(function (response) {
+                    rootScope.playerId="error";
+                });
+
             }).catch(function (response) {
                 location.path('/player/panel');
             });
@@ -229,19 +240,40 @@ gameModule.controller('gameController', ['$rootScope', '$routeParams', '$scope',
                 console.log(rootScope.playerId);
             };
 
-            scope.update=function() {
-                getMoveHistory().then(function () {
+            scope.update= async function() {
+                await sleep(300);
+                http.get('/move/list').then(function (response) {
+                    scope.movesInGame=response.data;
+                    scope.playerMoves=[];
 
-                    var gameStatus=scope.movesInGame[scope.movesInGame.length-1].gameStatus;
-                    if (gameStatus=='IN_PROGRESS') {
-                        getNextMove();
-                    }
-                    else {
-                        alert(gameStatus)
-                    }
+                    //fill the board with positions from the retrieved moves
+                    angular.forEach(scope.movesInGame, function (move) {
+                        scope.rows[move.boardRow-1][move.boardColumn-1].letter = move.playerPieceCode;
+                    });
                 }).catch(function (response) {
-                    scope.errorMessage = "Can't retrieve move"
+                    scope.errorMessage= "Failed to load moves in game"
                 });
+                console.log("made it ---------------------");
+                console.log(scope.movesInGame);
             }
+
+            scope.updateConfig= async function() {
+                await sleep(1000);
+                http.get('/game/'+routeParams.id).then(function (response) {
+                    scope.gameProperties = response.data;
+                    gameStatus = scope.gameProperties.gameStatus;
+                    console.log(response.data);
+                    console.log("adbove");
+                }).catch(function (response) {
+                    scope.errorMessage = "Failed to load game properties";
+                });
+                console.log("made it CONFIG ---------------------");
+                console.log(scope.gameProperties);
+            }
+
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+            
 
     }]);
