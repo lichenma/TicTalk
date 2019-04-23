@@ -17,7 +17,7 @@ var colors = [
 
 
 async function connect() {
-    await sleep(1000);
+    await sleep(300);
     const Url = '/player/logged'; 
     console.log(Url);
     $.ajax({
@@ -100,6 +100,14 @@ function onMessageReceived(payload) {
     } else if (message.type === 'LEAVE') {
         messageElement.classList.add('event-message');
         message.content=message.sender + ' left!';
+    } else if (message.type === 'MOVE') {
+        messageElement.classList.add('event-message');
+        message.content=message.sender + ' made a move!';
+
+        console.log(angular.element(document.getElementById('game-page')).scope());
+        angular.element(document.getElementById('game-page')).scope().update();
+        angular.element(document.getElementById('game-page')).scope().$apply();
+
     } else {
         messageElement.classList.add('chat-message');
 

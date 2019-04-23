@@ -39,7 +39,9 @@ gameModule.controller('newGameController', ['$rootScope','$scope', '$http', '$lo
             // retrieving player id data
 
             http.get('/player/logged').then(function (response) {
-                rootScope.playerId=response.data;
+                var temp = response.data
+                rootScope.playerId=temp.object.userName;
+                console.log(rootScope.playerId);
             }).catch(function (response) {
                 rootScope.playerId="error";
             });
@@ -221,6 +223,25 @@ gameModule.controller('gameController', ['$rootScope', '$routeParams', '$scope',
                         }
                     }
                 });
+                stompClient.send("/app/chat.sendMove/"+Id,
+                {},
+                JSON.stringify({sender: rootScope.playerId, type: 'MOVE'}))
+                console.log(rootScope.playerId);
             };
+
+            scope.update=function() {
+                getMoveHistory().then(function () {
+
+                    var gameStatus=scope.movesInGame[scope.movesInGame.length-1].gameStatus;
+                    if (gameStatus=='IN_PROGRESS') {
+                        getNextMove();
+                    }
+                    else {
+                        alert(gameStatus)
+                    }
+                }).catch(function (response) {
+                    scope.errorMessage = "Can't retrieve move"
+                });
+            }
 
     }]);

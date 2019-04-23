@@ -10,7 +10,8 @@ public class ChatMessage {
 
         CHAT,
         JOIN,
-        LEAVE
+        LEAVE,
+        MOVE
     }
 
     public MessageType getType() {
