@@ -226,8 +226,15 @@ gameModule.controller('gameController', ['$rootScope', '$routeParams', '$scope',
                                         getNextMove();
                                     }
                                     else {
-                                        alert(gameStatus)
+                                        // we are currently handling it using the update function
+                                        
+                                        //alert(gameStatus)
                                     }
+
+                                    stompClient.send("/app/chat.sendMove/"+Id,
+                                    {},
+                                    JSON.stringify({sender: scope.playerId, type: 'MOVE'}))
+                                    console.log(scope.playerId);
                                 });
                             }).catch(function (response) {
                                 scope.errorMessage = "Can't send the move"
@@ -235,10 +242,6 @@ gameModule.controller('gameController', ['$rootScope', '$routeParams', '$scope',
                         }
                     }
                 });
-                stompClient.send("/app/chat.sendMove/"+Id,
-                {},
-                JSON.stringify({sender: scope.playerId, type: 'MOVE'}))
-                console.log(scope.playerId);
             };
 
             scope.update= async function() {
@@ -251,6 +254,13 @@ gameModule.controller('gameController', ['$rootScope', '$routeParams', '$scope',
                     angular.forEach(scope.movesInGame, function (move) {
                         scope.rows[move.boardRow-1][move.boardColumn-1].letter = move.playerPieceCode;
                     });
+                    var gameStatus=scope.movesInGame[scope.movesInGame.length-1].gameStatus;
+                    if (gameStatus=='IN_PROGRESS') {
+                        // Don't need to do anything
+                    }
+                    else {
+                        alert(gameStatus)
+                    }
                 }).catch(function (response) {
                     scope.errorMessage= "Failed to load moves in game"
                 });
