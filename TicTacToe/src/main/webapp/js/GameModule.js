@@ -6,6 +6,7 @@ gameModule.controller('newGameController', ['$rootScope','$scope', '$http', '$lo
         rootScope.gameId = null;
         scope.newGameData = null;
         rootScope.playerId = null;
+        scope.playerId = null;
 
         scope.newGameOptions = {
             availablePieces: [
@@ -236,8 +237,8 @@ gameModule.controller('gameController', ['$rootScope', '$routeParams', '$scope',
                 });
                 stompClient.send("/app/chat.sendMove/"+Id,
                 {},
-                JSON.stringify({sender: rootScope.playerId, type: 'MOVE'}))
-                console.log(rootScope.playerId);
+                JSON.stringify({sender: scope.playerId, type: 'MOVE'}))
+                console.log(scope.playerId);
             };
 
             scope.update= async function() {
@@ -267,8 +268,6 @@ gameModule.controller('gameController', ['$rootScope', '$routeParams', '$scope',
                 }).catch(function (response) {
                     scope.errorMessage = "Failed to load game properties";
                 });
-                console.log("made it CONFIG ---------------------");
-                console.log(scope.gameProperties);
             }
 
             function sleep(ms) {

@@ -60,7 +60,7 @@ function onConnected() {
         {},
         JSON.stringify({sender: username, type: 'JOIN'})
     )
-    angular.element(document.getElementById('game-page')).rootScope().playerId = username;
+    angular.element(document.getElementById('game-page')).scope().playerId = username;
 }
 
 
@@ -106,7 +106,7 @@ function onMessageReceived(payload) {
     } else if (message.type === 'LEAVE') {
         messageElement.classList.add('event-message');
         message.content=message.sender + ' left!';
-        
+
     } else if (message.type === 'MOVE') {
         messageElement.classList.add('event-message');
         message.content=message.sender + ' made a move!';
