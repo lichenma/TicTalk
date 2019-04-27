@@ -1,46 +1,92 @@
-<div class="row">
-<div class="col-md-6">
+<link rel="stylesheet" href="../css/main.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="../js/main.js"></script>
 
-<div class="gameon">
-    <!--<div class="messageContainer" ng-show="game.gameover">-->
-	<!--<div class="winmessage">{{game.winmessage}}<br/> GAME OVER</div>-->
-    <!--</div>-->
+<!-- username can be accessed using this scope variable
 
-    <div class="tableContainer">
-	<div class="gametable">
-	    <div ng-repeat="row in rows" class="tablerow">
-		<div id="{{column.id}}" class="{{column.class}}" ng-repeat="column in row" >
-		    <div ng-click="markPlayerMove(column)" class="boxContent{{column.letter}}"> </div>
+<h1 id="userName">{{playerId.object.userName}}</h1>
+
+-->
+
+<div id="game-page" class="row">
+	<div class="col-md-6">
+
+		<div class="gameon">
+			<!--<div class="messageContainer" ng-show="game.gameover">-->
+			<!--<div class="winmessage">{{game.winmessage}}<br/> GAME OVER</div>-->
+			<!--</div>-->
+
+			<div class="tableContainer">
+				<div class="gametable">
+					<div ng-repeat="row in rows" class="tablerow">
+						<div id="{{column.id}}" class="{{column.class}}" ng-repeat="column in row" >
+							<div ng-click="markPlayerMove(column)" class="boxContent{{column.letter}}"> </div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-	    </div>
 	</div>
-    </div>
-</div>
+
+	<div class="col-md-6">
+		<div class="row" style="max-height: 15em;overflow:auto; font-size: 0.8em; padding-right: 10px; margin-right: 0px; padding-left: 20px;">
+
+			<table style="color:white;" class="table table-hover table-striped table-condensed" ng-show="movesInGame.length">
+			<h2 class="lead">History of moves in the game</h2>
+			<thead>
+			<td>Player</td>
+			<td>Position</td>
+			<td>Move created</td>
+			</thead>
+			<tbody>
+				<tr ng-repeat="move in movesInGame">
+				<td>{{move.userName}}</td>
+				<td>Board row: {{move.boardRow}}, Board column: {{move.boardColumn}}</td>
+				<td>{{move.created | date:'MM-dd-yyyy HH:mm:ss'}}</td>
+				</tr>
+				</tbody>
+				</table>
+
+				<div ng-show="!movesInGame.length">
+				No moves yet.
+				</div>
+		</div>
+		<div id="chat-page" class="row" style="height: 15em; padding-top: 1em;">
+			<div class="chat-container" style="
+			margin-left: 0px;
+			margin-top: 0px;
+			margin-right: 0px;
+			width: 100%;">
+				<ul id="messageArea" style="height:15em; overflow:auto;">
+	
+				</ul>
+				<form id="messageForm" name="messageForm">
+					<div class="form-group">
+						<div class="input-group clearfix">
+							<input type="text" id="message" placeholder="Type a Message..." autocomplete="off" class="form-control"/>
+							<button type="submit" class="primary">Send</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
 </div>
 
-<div class="col-md-6">
-<div>
-
-    <table class="table table-hover table-striped table-condensed" ng-show="movesInGame.length">
-	<h2 class="lead">History of moves in the game</h2>
-	<thead>
-	<td>Player</td>
-	<td>Position</td>
-	<td>Move created</td>
-	</thead>
-	<tbody>
-	    <tr ng-repeat="move in movesInGame">
-		<td>{{move.userName}}</td>
-		<td>Board row: {{move.boardRow}}, Board column: {{move.boardColumn}}</td>
-		<td>{{move.created | date:'MM-dd-yyyy HH:mm:ss'}}</td>
-		</tr>
-		</tbody>
-	    </table>
-
-	    <div ng-show="!movesInGame.length">
-		No moves yet.
-	    </div>
-
-</div>
-</div>
+<!-- Include this part if we want users to set their own username -->
+<div id="username-page" class="hidden">
+	<div class="username-page-container">
+		<h1 class="title">Enter your Username</h1>
+		<form id="usernameForm" name="usernameForm">
+			<div class="form-group">
+				<input type="text" id="name" placeholder="Username" autocomplete="off" class="form-control"/>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="accent username-submit">Connect</button>
+			</div>
+		</form>
+	</div>
 </div>

@@ -5,6 +5,8 @@ gameModule.controller('newGameController', ['$rootScope','$scope', '$http', '$lo
 
         rootScope.gameId = null;
         scope.newGameData = null;
+        rootScope.playerId = null;
+        scope.playerId = null;
 
         scope.newGameOptions = {
             availablePieces: [
@@ -34,12 +36,22 @@ gameModule.controller('newGameController', ['$rootScope','$scope', '$http', '$lo
             }).catch(function (response) {
                 location.path('/player/panel');
             });
+
+            // retrieving player id data
+
+            http.get('/player/logged').then(function (response) {
+                var temp = response.data
+                rootScope.playerId=temp.object.userName;
+                console.log(rootScope.playerId);
+            }).catch(function (response) {
+                rootScope.playerId="error";
+            });
         }
 
     }]);
 
-gameModule.controller('gamesToJoinController', ['$scope', '$http', '$location',
-    function (scope, http, location) {
+gameModule.controller('gamesToJoinController', ['$rootScope','$scope', '$http', '$location',
+    function (rootScope, scope, http, location) {
 
         scope.gamesToJoin=[];
 
@@ -59,6 +71,17 @@ gameModule.controller('gamesToJoinController', ['$scope', '$http', '$location',
                 }
             }).then(function (response) {
                 location.path('/game/' + response.data.id);
+
+                // retrieving player id data
+
+                http.get('/player/logged').then(function (response) {
+                    var temp = response.data
+                    rootScope.playerId=temp.object.userName;
+                    console.log(rootScope.playerId);
+                }).catch(function (response) {
+                    rootScope.playerId="error";
+                });
+
             }).catch(function (response) {
                 location.path('/player/panel');
             });
@@ -203,8 +226,15 @@ gameModule.controller('gameController', ['$rootScope', '$routeParams', '$scope',
                                         getNextMove();
                                     }
                                     else {
-                                        alert(gameStatus)
+                                        // we are currently handling it using the update function
+                                        
+                                        //alert(gameStatus)
                                     }
+
+                                    stompClient.send("/app/chat.sendMove/"+Id,
+                                    {},
+                                    JSON.stringify({sender: scope.playerId, type: 'MOVE'}))
+                                    console.log(scope.playerId);
                                 });
                             }).catch(function (response) {
                                 scope.errorMessage = "Can't send the move"
@@ -213,5 +243,46 @@ gameModule.controller('gameController', ['$rootScope', '$routeParams', '$scope',
                     }
                 });
             };
+
+            scope.update= async function() {
+                await sleep(300);
+                http.get('/move/list').then(function (response) {
+                    scope.movesInGame=response.data;
+                    scope.playerMoves=[];
+
+                    //fill the board with positions from the retrieved moves
+                    angular.forEach(scope.movesInGame, function (move) {
+                        scope.rows[move.boardRow-1][move.boardColumn-1].letter = move.playerPieceCode;
+                    });
+                    var gameStatus=scope.movesInGame[scope.movesInGame.length-1].gameStatus;
+                    if (gameStatus=='IN_PROGRESS') {
+                        // Don't need to do anything
+                    }
+                    else {
+                        alert(gameStatus)
+                    }
+                }).catch(function (response) {
+                    scope.errorMessage= "Failed to load moves in game"
+                });
+                console.log("made it ---------------------");
+                console.log(scope.movesInGame);
+            }
+
+            scope.updateConfig= async function() {
+                await sleep(1000);
+                http.get('/game/'+routeParams.id).then(function (response) {
+                    scope.gameProperties = response.data;
+                    gameStatus = scope.gameProperties.gameStatus;
+                    console.log(response.data);
+                    console.log("adbove");
+                }).catch(function (response) {
+                    scope.errorMessage = "Failed to load game properties";
+                });
+            }
+
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+            
 
     }]);
